@@ -135,16 +135,45 @@ use Illuminate\Http\Request;
       $student_info = new student_info;
       echo $request->semester;
       echo $request->roll_no;
-      $student_info::where('roll_no',$request->roll_no)
-      ->update(['semester_fee'=>$request->semester_fee,'balance_due'=>$request->balance_due,'scholarship'=>($request->scholarship/100)*103000,'bus_fee'=>$request->bus_fee,'total_fee'=>103000-($request->scholarship/100)*103000]);
-      
-      DB::table('scholarships')
+      echo $request->semester_fee;
+      echo $request->balance_due;
+      echo $request->scholarship;
+      echo $request->bus_fee;
+      echo $request->total_fee;
+         
+      DB::table('student_registration')
       ->where('roll_no',$request->roll_no)
-      ->update(['scholarship_percentage'=>$request->scholarship]);
+      ->update([
+        'semester'=>$request->semester
+      ]);
 
+      $student_info::where('roll_no',$request->roll_no)
+      ->update(['semester_fee'=>$request->semester_fee,'balance_due'=>$request->balance_due,'scholarship'=>$request->scholarship,'bus_fee'=>$request->bus_fee,'total_fee'=>103000-$request->scholarship+$request->busfee+$request->balance_due]);
+      
+      $scholarship_row= DB::table('scholarships')
+        ->where('roll_no',$request->roll_no)
+        ->get();
+
+       if(count($scholarship_row)==0&&$request->scholarship>0){
+        DB::table('scholarships')
+        ->where('roll_no',$request->roll_no)
+        ->insert([
+          'roll_no'=>$request->roll_no
+        ]);
+  
+       }
+      
+
+      $balance_due_row =DB::table('students_with_due_balance')
+      ->where('roll_no',$request->roll_no)
+      ->get();
+
+      if(count($balance_due_row)==0&&$request->balance_due>0)
       DB::table('students_with_due_balance')
       ->where('roll_no',$request->roll_no)
-      ->update(['due_amount'=>$request->$request->balance_due]);
+      ->insert(
+        ['roll_no'=>$request->roll_no]
+      );
       }
 
     public function edit_student_info(Request $request){

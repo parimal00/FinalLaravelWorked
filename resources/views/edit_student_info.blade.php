@@ -52,13 +52,13 @@ edit_students_info blade
       <tr>
         <td><input class ="form-control"name="bus_fee" value ="{{$row->bus_fee}}" type="text"></td>
         </tr>
-      <tr>
+      {{-- <tr>
         <td>Total fee</td>
       </tr>
       <tr>
         <td><input class ="form-control"name="total_fee" value ="{{$row->total_fee}}" type="text"></td>
         </tr>
-      <tr>
+      <tr> --}}
         <td><button name="btn_addData" class="form-control">Edit information</button></td>
       </tr>
   </form>
