@@ -148,7 +148,7 @@ use Illuminate\Http\Request;
       ]);
 
       $student_info::where('roll_no',$request->roll_no)
-      ->update(['semester_fee'=>$request->semester_fee,'balance_due'=>$request->balance_due,'scholarship'=>$request->scholarship,'bus_fee'=>$request->bus_fee,'total_fee'=>103000-$request->scholarship+$request->busfee+$request->balance_due]);
+      ->update(['semester_fee'=>$request->semester_fee,'balance_due'=>$request->balance_due,'scholarship'=>$request->scholarship,'bus_fee'=>$request->bus_fee,'total_fee'=>$request->total_fee-$request->scholarship+$request->busfee+$request->balance_due]);
       
       $scholarship_row= DB::table('scholarships')
         ->where('roll_no',$request->roll_no)
@@ -230,16 +230,40 @@ use Illuminate\Http\Request;
     
      }
       
-      else if($request->obtained_amount-$request->total_fee<0){
-        $student_with_due_balance= new students_with_due_balance;
-        $student_with_due_balance->roll_no = $request->roll_no;
-        $student_with_due_balance->name=$request->name;
-        $student_with_due_balance->semester=$request->semester;
-        $student_with_due_balance->due_amount=$request->total_fee-$request->obtained_amount;
-        $student_with_due_balance->date="jack iss seyx";
-        $student_with_due_balance->save();
-        $student_info::where('roll_no',$request->roll_no)
-        ->update(['paid'=>'partial paid']);
+      //else($request->obtained_amount-$request->total_fee<0)
+      else{
+
+         $row= DB::table('students_with_due_balance')
+          ->where('roll_no',$request->roll_no)
+          ->get();
+
+        
+
+          if(count($row)==0){
+            DB::table('students_with_due_balance')
+            ->insert(['roll_no'=>$request->roll_no]);
+
+
+          }
+
+          $total_fee=0;
+          $row2= DB::table('student_account')
+          ->where('roll_no',$request->roll_no)
+          ->get();
+
+          foreach($row2 as $row1){
+            $total_fee = $row1->total_fee;
+          }
+
+          
+            DB::table('student_account')
+            ->where('roll_no',$request->roll_no)
+            ->update([
+              "total_fee"=>$request->total_fee-$request->obtained_amount
+              
+            ]);
+          
+    
       }
     }
 
@@ -333,6 +357,8 @@ use Illuminate\Http\Request;
 
     public function scholarship_add(Request $request){
       $scholarship = new scholarship;
+
+      $request->validate(['percentage'=>'required']);
      
       
       $fee = 103000;
@@ -382,12 +408,15 @@ use Illuminate\Http\Request;
           'roll_no'=>$roll_no,
          
         ]);
+        
+        $scholarship_amount =abs(($scholarship_percentage/100)*$total_fee);
+
+        
+        $student_info::where('roll_no',$roll_no)
+        ->update(['scholarship'=>$scholarship_amount]);
   
         $student_info::where('roll_no',$roll_no)
-        ->update(['scholarship'=>($scholarship_percentage/100)*$total_fee]);
-  
-        $student_info::where('roll_no',$roll_no)
-        ->update(['total_fee'=>$total_fee-($scholarship_percentage/100)*$total_fee]);
+        ->update(['total_fee'=>$total_fee-$scholarship_amount]);
   
         $script = "<script>alert('scholarship submitted successfully');</script>";
         echo $script;

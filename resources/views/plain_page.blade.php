@@ -57,6 +57,8 @@ if(isset($_POST['hey'])&&$_POST['roll_no']!=null){
     <tr>
       <th> scholarship percentage </th>
     </tr>
+    @error('percentage') {{$message}} @enderror
+
     <tr>
       <td><input class ="form-control"name="percentage"placeholder="enter scholarship percentage" type="text"></td>
     </tr>
