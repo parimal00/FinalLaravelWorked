@@ -69,7 +69,7 @@
                                 class="fa fa-chevron-down"></span></a>
 
                         </li>
-                        <li><a href="{{url('view_scholarship')}}"><i class="fa fa-bar-chart-o"></i>Scholarship students<span
+                        <li><a href="{{url('payment_history')}}"><i class="fa fa-bar-chart-o"></i>Payment History<span
                             class="fa fa-chevron-down"></span></a>
 
                     </li>

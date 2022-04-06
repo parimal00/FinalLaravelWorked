@@ -4,6 +4,8 @@
 @section('body')
 
 get_amount_blade
+get_amount function, submit_amount function
+calculation of fees from others tables is not included (getInfo_amount)
 
 <form class="" action="{{route('roll_get_amount')}}" method="post">
 @csrf
@@ -25,7 +27,7 @@ get_amount_blade
 
 if(isset($_POST['hey'])&&$_POST['bname']!=null){
 ?>
-  @foreach($datas as $row)
+
  
 
   
@@ -33,65 +35,44 @@ if(isset($_POST['hey'])&&$_POST['bname']!=null){
    <form action="submit_amount" method ="post">
     @csrf
     <tr>
-        <th>Roll no:</td>
+        <th>Amount from {{$data['semester']}} semester:</td>
       </tr>
     <tr>
-      <td><input class ="form-control"type="text" name="roll_no" value ="{{$row->roll_no}}"></td>
+      <td>{{$data['ts_total']}}</td>
     </tr>
     <tr>
-        <th>Name</td>
-      </tr>
-    <tr>
-      <td><input class ="form-control"type="text" name="name"value ="{{$row->firstname}}"></td>
-    </tr>
-    <tr>
-        <th>Semester</td>
-      </tr>
-    <tr>
-      <td><input class ="form-control"type="text"name="semester"value ="{{$row->semester}}"></td>
-    </tr>
-    <tr>
-      <th>Semester fee</td>
+      <th>Dues from previous semester</td>
     </tr>
   <tr>
-    <td><input class ="form-control"type="text"name="semester_fee"value ="{{$row->semester_fee}}"></td>
+
+    <td>{{$data['total']-$data['ts_total']-$data['total_previous_payment']}}</td>
   </tr>
     <tr>
-        <th>Balance due</td>
+        <th>dues from {{$data['semester']}} semester</td>
       </tr>
     <tr>
-      <td><input class ="form-control" name="balance_due"type="text"value ="{{$row->balance_due}}"></td>
+      <td>{{$data['ts_total']-$data['ts_payment']}}</td>
     </tr>
     <tr>
-      <th>Scholarship</td>
-    </tr>
-    <tr>
-        <td><input class ="form-control"name="scholarship"value ="{{$row->scholarship}}"></td>
-      </tr>
-      <tr>
-        <th>Bus fee</td>
+        <th>Total dues</td>
       </tr>
     <tr>
-    <td><input class ="form-control"name="bus_fee"value="{{$row->bus_fee}}"type="text"></td>
+      <td>{{$data['total']-$data['ts_payment']-$data['total_previous_payment']}}</td>
     </tr>
-    <tr>
-      <th>Total amount</td>
-    </tr>
-  <tr>
-  <td><input class ="form-control"name="total_fee"value="{{$row->total_fee}}"type="text"></td>
-  </tr>
+   
   <tr>
     <th>Amount obtained </td>
   </tr>
 <tr>
 <td><input class ="form-control"name="obtained_amount" placeholder="enter your amount" type="text"></td>
+<td><input type="hidden" class ="form-control"name="roll_no"  value="{{$data['roll_no']}}" placeholder="enter your amount" type="text"></td>
 </tr>
     <tr>
       <td><button name="btn_addData" class="form-control">Add data in database</button></td>
     </tr>
   </form>
   </table>
-  @endforeach
+
 <?php
 }
 ?>

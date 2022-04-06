@@ -1,4 +1,6 @@
 <?php
+use App\Http\Controllers\HelloController;
+use App\Http\Controllers\Test;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,11 +13,13 @@
 |
 */
 
+Route::get('and','Test@index');
+
 //Route::get('/{name}','Hellocontroller@index')->where(["name"=>"[0-9]+"]);
 
+//use PhpParser\Node\Expr\FuncCall;
 
-
-Route::get('/','secondController@index');
+//Route::get('/','secondController@index');
 
 
 //////////////////////////////////////////////////////////////
@@ -32,9 +36,9 @@ Route::get('lol',function(){
     return view('accountantlogin');
    }
 });
-Route::post('submit','Hellocontroller@scholarship_add');
+Route::post('submit','HelloController@scholarship_add');
 
-Route::post('lol','Hellocontroller@getData')->name('roll_no');
+Route::post('lol','HelloController@getData')->name('roll_no');
 
 
 
@@ -44,7 +48,7 @@ Route::post('lol','Hellocontroller@getData')->name('roll_no');
 
 
 
-Route::post('bus_manage','Hellocontroller@getData_bus')->name('roll_no_bus');
+Route::post('bus_manage','HelloController@getData_bus')->name('roll_no_bus');
 
 Route::get('bus_manage',function(){
     if(session()->has('accountant')){
@@ -57,7 +61,7 @@ Route::get('bus_manage',function(){
     }
 });
 
-Route::post('submit_bus_fee_info','Hellocontroller@busfee_add');
+Route::post('submit_bus_fee_info','HelloController@busfee_add');
 
 
 
@@ -66,9 +70,13 @@ Route::post('submit_bus_fee_info','Hellocontroller@busfee_add');
 ///////////////////////////////////////////////////////////////////
 ////////View Student Information
 
+Route::group(['middleware'=>['hey']],function(){
+    Route::get('welcome',function(){
+        echo "welcome";
+    });
+});
 
-
-Route::get('student_info','Hellocontroller@getInfo');
+Route::get('student_info','HelloController@getInfo');
 
 
 
@@ -84,21 +92,21 @@ Route::get('get_amount',function(){
 });
 
 
-Route::post('student_info','Hellocontroller@getInfo_amount')->name('roll_get_amount');
+Route::post('student_info','HelloController@getInfo_amount')->name('roll_get_amount');
 
-Route::post('submit_amount','Hellocontroller@submit_amount');
+Route::post('submit_amount','HelloController@submit_amount');
 
 
 //////search_student
 
-Route::post('layout/master','Hellocontroller@search_student')->name('search');
+Route::post('layout/master','HelloController@search_student')->name('search');
 
 /////////////////////////////////////
 ///////////Edit Student account information
 
-Route::get('edit_student_info','Hellocontroller@edit_student_info');
+Route::get('edit_student_info','HelloController@edit_student_info');
 
-Route::post('edit_student_info','Hellocontroller@update')->name('edit_info');
+Route::post('edit_student_info','HelloController@update')->name('edit_info');
 
 
 ////////////////////////////////////////////////////////////
@@ -113,24 +121,28 @@ Route::get('update',function(){
     }
 });
 
-Route::post('update','Hellocontroller@update_all_info')->name('update_all_info');
+Route::post('update','HelloController@update_all_info')->name('update_all_info');
 
 ///////////////////////////////////////////////////////////////////
 ///////////////////////View students with due balance
 
-Route::get('view_due','Hellocontroller@stu_due_get_info');
+Route::get('view_due','HelloController@stu_due_get_info');
 
 
 /////////////////////////////////////////////////////////////////
 //////////////////////View students with scholarships
 
-Route::get('view_scholarship','Hellocontroller@stu_scho_get_info');
+Route::get('view_scholarship','HelloController@stu_scho_get_info');
 
 
 Route::get('admin/lol',function(){
     return view ('admin');
 });
+////////////////payment history//////
 
+Route::get('payment_history','HelloController@payment_history');
+
+Route::post('roll_no_payment_history','HelloController@roll_no_payment_history')->name('roll_no_payment_history');
 
 /*
 
@@ -155,7 +167,13 @@ Route::get('accountantlogin',function(){
     return view('accountantlogin');
 });
 
-Route::post('login_accountant','Hellocontroller@accountant_login');
+Route::post('login_accountant','Test@index');
+
+//Route::post('login_accountant',[hellocontroller::class,'accountant_login']);
+
+// Route::post('login_accountant',function(){
+//     echo "jack is sexy";
+// });
 
 Route::get('logout',function(){
     session()->pull('accountant');

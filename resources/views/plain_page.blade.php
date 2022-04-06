@@ -34,28 +34,28 @@ if(isset($_POST['hey'])&&$_POST['roll_no']!=null){
       <th>roll_no </th>
     </tr>
     <tr>
-      <td><input class ="form-control"type="text" name="roll_no" value ="{{$row['roll_no']}}"></td>
+      <td> {{$row['roll_no']}} <input type="hidden" class ="form-control"type="text" name="roll_no" value ="{{$row['roll_no']}}"></td>
     </tr>
     <tr>
       <th>firs name</th>
     </tr>
     <tr>
-      <td><input class ="form-control"type="text" name="firstname"value ="{{$row['firstname']}}"></td>
+      <td>{{$row['firstname']}}</td>
     </tr>
     <tr>
       <th>lasname  </th>
     </tr>
     <tr>
-      <td><input class ="form-control"type="text"name="lastname"value ="{{$row['lastname']}}"></td>
+      <td>{{$row['lastname']}}</td>
     </tr>
     <tr>
       <th>semester </th>
     </tr>
     <tr>
-      <td><input class ="form-control" name="semester"type="text"value ="{{$row['semester']}}"></td>
+      <td>{{$row['semester']}}</td>
     </tr>
     <tr>
-      <th> scholarship percentage </th>
+      <th> scholarship amount </th>
     </tr>
     @error('percentage') {{$message}} @enderror
 

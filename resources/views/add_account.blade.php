@@ -31,19 +31,22 @@ if(isset($_POST['hey'])&&$_POST['roll_no']!=null){
    <form action="submit_bus_fee_info" method ="post">
     @csrf
     <tr>
-      <td><input class ="form-control"type="text" name="roll_no" value ="{{$row['roll_no']}}"></td>
+      <td> {{$row['roll_no']}}<input type="hidden" class ="form-control"type="text" name="roll_no" value ="{{$row['roll_no']}}"></td>
     </tr>
     <tr>
-      <td><input class ="form-control"type="text" name="firstname"value ="{{$row['firstname']}}"></td>
+      <td>{{$row['firstname']}}</td>
     </tr>
     <tr>
-      <td><input class ="form-control"type="text"name="lastname"value ="{{$row['lastname']}}"></td>
+      <td>{{$row['lastname']}}</td>
     </tr>
     <tr>
-      <td><input class ="form-control" name="semester"type="text"value ="{{$row['semester']}}"></td>
+      <td>{{$row['semester']}}</td>
     </tr>
     <tr>
-      <td><input class ="form-control"name="bus_fee"placeholder="enter  bus_fee" type="text"></td>
+      <td><input class ="form-control"name="bus_fee"placeholder="enter  bus_fee" value="{{$bus_fee}}" type="text"></td>
+    </tr>
+    <tr>
+      <td><input type="hidden" class ="form-control" name="fee_id" placeholder="enter  bus_fee" value="{{$fee_id}}" type="text"></td>
     </tr>
     <tr>
       <td><button name="btn_addData"  class="form-control">Add data in database</button></td>
